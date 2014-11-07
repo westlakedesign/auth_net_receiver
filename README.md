@@ -49,7 +49,7 @@ Run the `auth_net_receiver:process` rake task to process all pending transaction
     $ rake auth_net_receiver:process 
     D, [2014-11-06T19:31:38.191435 #39766] DEBUG -- : Processing Authorize.net transactions...
     D, [2014-11-06T19:31:38.289545 #39766] DEBUG -- : Done!
-    D, [2014-11-06T19:31:38.289593 #39766] DEBUG -- : - 12 success
+    D, [2014-11-06T19:31:38.289593 #39766] DEBUG -- : - 12 authentic
     D, [2014-11-06T19:31:38.289616 #39766] DEBUG -- : - 0 errrors
     D, [2014-11-06T19:31:38.289635 #39766] DEBUG -- : - 1 forgeries
 

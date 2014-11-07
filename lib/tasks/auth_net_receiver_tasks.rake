@@ -10,7 +10,7 @@ namespace :auth_net_receiver do
     logger.debug 'Processing Authorize.net transactions...'
     result = AuthNetReceiver::RawTransaction.process_all!
     logger.debug 'Done!'
-    logger.debug "- #{result[:authentic]} success"
+    logger.debug "- #{result[:authentic]} authentic"
     logger.debug "- #{result[:errors]} errrors"
     logger.debug "- #{result[:forgeries]} forgeries"
   end
