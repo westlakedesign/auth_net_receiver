@@ -15,7 +15,7 @@ This is primarily useful for those using the [Automated Recurring Billing](http:
         gem 'auth_net_receiver'
 
 2. Run bundle install
-3. Copy in database migrations to your new rails project
+3. Copy the database migrations to your rails project
 
         bundle exec rake railties:install:migrations
         rake db:migrate
@@ -38,7 +38,7 @@ The processing side will require some configuration before it works.
 
 The gateway login should be the same value you use when authenticating against Authorize.net. MD5 Hash is a secret value you configure in the Authorize.net dashboard. You can read more about the MD5 value [here](https://support.authorize.net/authkb/index?page=content&id=A588).
 
-As a final step, you should log in to your Authorize.net account and enter the desired endpoint into Silent Post URL setting. It is strongly recommended that you try this in a [sandbox account](https://sandbox.authorize.net) first.
+As a final step, you should log in to your Authorize.net account and enter the desired endpoint into Silent Post URL setting. Depending on how you mounted the engine in your routes.rb file, the URL will look something like this: `http://sample.com/auth_net/transactions/receiver`. It is strongly recommended that you try this in a [sandbox account](https://sandbox.authorize.net) first. 
 
 **NOTE:** Because Authorize.net has to actually make an HTTP post to your endpoint, it is not possible to run this application on localhost without a bit of work on the networking side. I won't attempt to cover the entire topic here, but if you are comfortable with DNS and port forwards you can probably figure out the rest. 
 
