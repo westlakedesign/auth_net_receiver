@@ -22,8 +22,8 @@ module AuthNetReceiver
     def json_data
       begin
         return JSON.parse(self.data)
-      rescue JSON::ParserError => e
-        logger.fatal "Error while parsing raw transaction data: #{e.message}"
+      rescue JSON::ParserError, TypeError => e
+        logger.warn "Error while parsing raw transaction data: #{e.message}"
         return {}
       end
     end
@@ -56,15 +56,15 @@ private
     end
 
     def md5_hash_is_valid?(json)
-      if AuthNetReceiver.config.hash_value.nil?
-        raise StandardError, 'AuthNetReceiver.config.hash_value cannot be nil!'
+      if AuthNetReceiver.config.hash_value.nil? || AuthNetReceiver.config.gateway_login.nil?
+        raise StandardError, 'AuthNetReceiver hash_value and gateway_login cannot be nil!'
       end
-      if json['x_subscription_id'].present?
-        hash_string = AuthNetReceiver.config.hash_value + json['x_trans_id'] + json['x_amount']
-      else
-        hash_string = AuthNetReceiver.config.hash_value + AuthNetReceiver.config.gateway_login + json['x_trans_id'] + json['x_amount']
-      end
-      hash = Digest::MD5.hexdigest(hash_string).upcase
+      parts = []
+      parts << AuthNetReceiver.config.hash_value
+      parts << AuthNetReceiver.config.gateway_login if json['x_subscription_id'].blank?
+      parts << json['x_trans_id']
+      parts << json['x_amount']
+      hash = Digest::MD5.hexdigest(parts.join()).upcase
       return hash == json['x_MD5_Hash']
     end
 
@@ -83,7 +83,7 @@ private
       }
       begin
         fields[:amount] = BigDecimal.new(json['x_amount'])
-      rescue e
+      rescue TypeError
         fields[:amount] = nil
       end
       return fields
