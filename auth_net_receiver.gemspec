@@ -10,8 +10,8 @@ Gem::Specification.new do |s|
   s.authors     = ["Greg Woods"]
   s.email       = ["greg@westlakedesign.com"]
   s.homepage    = "https://bitbucket.org/westlakedesign/auth_net_receiver"
-  s.summary     = "Processor for Authorize.NET Silent Post transactions"
-  s.description = "AuthNetReceiver is an endpoint and processor for transactions posted via Authorize.NET"
+  s.summary     = "Processor for Authorize.Net Silent Post transactions"
+  s.description = "AuthNetReceiver is an endpoint and processor for Authorize.Net Silent Post transactions"
   s.license     = "MIT"
 
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]

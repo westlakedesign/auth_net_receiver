@@ -5,6 +5,11 @@ module AuthNetReceiver
     scope :unprocessed, ->{ where(:is_processed => false) }
     scope :forgeries, ->{ where(:is_processed => true, :is_authentic => false) }
 
+    # Process all raw transactions
+    #
+    # * Returns a hash of counts in the form of:
+    #     {:authentic => 0, :forgeries => 0, :errors => 0}
+    #
     def self.process_all!
       result = {:authentic => 0, :forgeries => 0, :errors => 0}
       unprocessed.each do |raw_transaction|
@@ -19,6 +24,8 @@ module AuthNetReceiver
       return result
     end
 
+    # Return the JSON data on this record as a hash
+    #
     def json_data
       begin
         return JSON.parse(self.data)
@@ -28,6 +35,8 @@ module AuthNetReceiver
       end
     end
 
+    # Process this transaction
+    #
     def process!
       if is_processed
         raise StandardError, 'The requested transaction has already been processed'
@@ -38,6 +47,8 @@ module AuthNetReceiver
 
 private
 
+    # Perform the actual processing, update the status columns, and create an AuthNetReceiver::Transaction record
+    #
     def do_processing
       json = self.json_data
       if md5_hash_is_valid?(json)
@@ -55,6 +66,15 @@ private
       end
     end
 
+    # Check that the x_MD5_Hash value matches our expectations
+    #
+    # The formula for the hash differs for subscription vs regular transactions. Regular transactions
+    # will be associated with the gateway ID that was used in the originating API call. Subscriptions
+    # however are ran on the server at later date, and therefore will not be associated to a gateway ID.
+    #
+    # * Subscriptions: MD5 Digest(AUTH_NET_HASH_VAL + TRANSACTION_ID + TRANSACTION_AMOUNT)
+    # * Other Transactions: MD5 Digest(AUTH_NET_HASH_VAL + GATEWAY_LOGIN + TRANSACTION_ID + TRANSACTION_AMOUNT)
+    #
     def md5_hash_is_valid?(json)
       if AuthNetReceiver.config.hash_value.nil? || AuthNetReceiver.config.gateway_login.nil?
         raise StandardError, 'AuthNetReceiver hash_value and gateway_login cannot be nil!'
@@ -68,6 +88,8 @@ private
       return hash == json['x_MD5_Hash']
     end
 
+    # Generate the AuthNetReceiver::Transaction model fields from the given JSON data
+    #
     def fields_from_json(json)
       fields = {
         :transaction_id => json['x_trans_id'],

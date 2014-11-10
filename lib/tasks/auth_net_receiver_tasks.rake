@@ -5,9 +5,9 @@
 
 namespace :auth_net_receiver do
 
-  desc 'Process raw Authorize.net transactions'
+  desc 'Process raw Authorize.Net transactions'
   task :process => :environment do
-    logger.debug 'Processing Authorize.net transactions...'
+    logger.debug 'Processing Authorize.Net transactions...'
     result = AuthNetReceiver::RawTransaction.process_all!
     logger.debug 'Done!'
     logger.debug "- #{result[:authentic]} authentic"
