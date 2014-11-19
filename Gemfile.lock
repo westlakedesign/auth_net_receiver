@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    auth_net_receiver (0.0.1)
+    auth_net_receiver (1.0.beta1)
       rails (~> 4.1.0)
 
 GEM
