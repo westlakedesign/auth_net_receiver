@@ -4,7 +4,13 @@ The goal of this project is to capture and process transactions posted via the A
 
 ## What is that?
 
-The Silent Post URL is a feature of Authorize.Net that makes a post to a user-defined URL any time a transaction is made. Transactions are posted in real time and must be accepted by the web server within 2 seconds.
+The Silent Post URL is a feature of Authorize.Net that makes a post to a user-defined URL any time a transaction is made. Take note of the following rules:
+
+- Transactions are sent in real time
+- Each transaction is only ever sent once, regardless of server response
+- A transaction must be accepted within 2 seconds.
+
+For this reason, Authorize.net recommends that the post action is only used to collect raw data, while parsing and validation is pushed off to a later time.
 
 This is primarily useful for those using the [Automated Recurring Billing](http://developer.authorize.net/api/arb/) system, or ARB for short. Subscriptions created in ARB will make their transactions at the requested schedule, but (at this time) there is no direct API for pulling down those transactions. By making use of the Silent Post, you can capture all ARB transactions and use that data to reconcile the state of your user's subscription. 
 
@@ -46,9 +52,13 @@ As a final step, you should log in to your Authorize.Net account and enter the d
 
 **NOTE:** Because Authorize.Net has to actually make an HTTP post to your endpoint, it is not possible to run this application on localhost without a bit of work on the networking side. I won't attempt to cover the entire topic here, but if you are comfortable with DNS and port forwards you can probably figure out the rest. 
 
-## Processing
+## Processing with ActiveJob
 
-Run the `auth_net_receiver:process` rake task to process all pending transactions:
+If you are running Rails 4.2, we can take advantage of [ActiveJob](http://edgeguides.rubyonrails.org/active_job_basics.html) and process transactions in the background. Set `AuthNetReceiver.config.active_job = false` if you wish to disable this feature.
+
+## Processing without ActiveJob
+
+If you are not using ActiveJob, raw transactions will pile up in the database and need to be processed manually. Run the `auth_net_receiver:process` rake task to process all pending transactions:
 
     $ rake auth_net_receiver:process 
     D, [2014-11-06T19:31:38.191435 #39766] DEBUG -- : Processing Authorize.Net transactions...
