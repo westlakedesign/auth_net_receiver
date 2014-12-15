@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
   s.version     = AuthNetReceiver::VERSION
   s.authors     = ["Greg Woods"]
   s.email       = ["greg@westlakedesign.com"]
-  s.homepage    = "https://bitbucket.org/westlakedesign/auth_net_receiver"
+  s.homepage    = "https://github.com/westlakedesign/auth_net_receiver"
   s.summary     = "Processor for Authorize.Net Silent Post transactions"
   s.description = "AuthNetReceiver is an endpoint and processor for Authorize.Net Silent Post transactions"
   s.license     = "MIT"
