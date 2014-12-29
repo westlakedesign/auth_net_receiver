@@ -1,4 +1,5 @@
 require "auth_net_receiver/configuration"
+require "auth_net_receiver/active_job" if defined?(ActiveJob)
 
 module AuthNetReceiver
   class Engine < ::Rails::Engine
