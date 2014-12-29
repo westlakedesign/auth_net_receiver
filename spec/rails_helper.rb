@@ -37,6 +37,11 @@ RSpec.configure do |config|
   # instead of true.
   config.use_transactional_fixtures = true
 
+  # Skip ActiveJob if testing Rails 4.1 or lower
+  if Rails.version.to_f < 4.2
+    config.exclude_pattern = 'spec/jobs/auth_net_receiver/*'
+  end
+
   # RSpec Rails can automatically mix in different behaviours to your tests
   # based on their file location, for example enabling you to call `get` and
   # `post` in specs under `spec/controllers`.
