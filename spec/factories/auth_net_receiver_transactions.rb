@@ -2,7 +2,7 @@
 
 FactoryGirl.define do
   factory :transaction, :class => 'AuthNetReceiver::Transaction' do
-    association :raw_transaction, :factory => :auth_net_receiver_raw_transaction
+    association :raw_transaction, :factory => :raw_transaction
     transaction_id 1
     subscription_id 1
     subscription_paynum 1
