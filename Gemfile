@@ -5,7 +5,7 @@ source 'https://rubygems.org'
 # development dependencies will be added by default to the :development group.
 gemspec
 
-gem 'rails', '4.2.0.rc3'
+gem 'rails', '4.2.0'
 gem 'delayed_job_active_record'
 
 # Declare any dependencies that are still in development here instead of in
