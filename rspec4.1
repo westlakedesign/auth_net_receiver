@@ -1,4 +1,7 @@
 #!/bin/bash
 
-BUNDLE_GEMFILE=./gemfiles/Gemfile-4.1
+export BUNDLE_GEMFILE=./gemfiles/Gemfile-4.1
+if [ "$1" == '--install' ]; then
+  bundle install
+fi
 rspec spec
